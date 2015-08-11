@@ -6,6 +6,10 @@ volume_icon = wibox.widget.imagebox()
 volume_widget = wibox.widget.textbox()
 volume_widget:set_align("right")
 
+volume_layout = wibox.layout.fixed.horizontal()
+volume_layout:add(volume_icon)
+volume_layout:add(volume_widget)
+
 function get_current_path()
    local path = debug.getinfo(2, "S").source:sub(2)
    return path:match("(.*/)")
