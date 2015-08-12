@@ -3,19 +3,19 @@ local awful = require("awful")
 
 volume_icon = wibox.widget.imagebox()
 
-volume_widget = wibox.widget.textbox()
-volume_widget:set_align("right")
+volume_text = wibox.widget.textbox()
+volume_text:set_align("right")
 
-volume_layout = wibox.layout.fixed.horizontal()
-volume_layout:add(volume_icon)
-volume_layout:add(volume_widget)
+volume_widget = wibox.layout.fixed.horizontal()
+volume_widget:add(volume_icon)
+volume_widget:add(volume_text)
 
 function get_current_path()
    local path = debug.getinfo(2, "S").source:sub(2)
    return path:match("(.*/)")
 end
 
-function update_volume(widget, icon_widget)
+function update_volume(text_widget, icon_widget)
   local fd = io.popen("amixer -D pulse sget Master")
   local pwd = get_current_path()
   local status = fd:read("*all")
@@ -23,18 +23,18 @@ function update_volume(widget, icon_widget)
 
   local volume = string.match(status, "(%d?%d?%d)%%")
   volume_int = tonumber(volume)
-  volume = string.format("% 3d", volume)
+  volume_str = string.format("% 3d", volume)
 
   icon = "volume_icon_med.png"
   status = string.match(status, "%[(o[^%]]*)%]")
 
   if string.find(status, "on", 1, true) then
     -- For the volume numbers
-    volume = volume .. "%"
+    volume_str = volume_str .. "%"
   else
     -- For the mute button
     volume_int = 0
-    volume = volume .. "M"
+    volume_str = volume_str .. "M"
   end
 
   if volume_int == 0 then
@@ -47,7 +47,7 @@ function update_volume(widget, icon_widget)
     icon = "volume_icon_high.png"
   end
 
-  widget:set_markup(volume)
+  text_widget:set_markup(volume_str)
   icon_widget:set_image(pwd .. icon)
 end
 
@@ -63,8 +63,8 @@ function volume_mute()
   awful.util.spawn("amixer -D pulse sset Master toggle")
 end
 
-update_volume(volume_widget, volume_icon)
+update_volume(volume_text, volume_icon)
 
 mytimer = timer({ timeout = 0.2 })
-mytimer:connect_signal("timeout", function () update_volume(volume_widget, volume_icon) end)
+mytimer:connect_signal("timeout", function () update_volume(volume_text, volume_icon) end)
 mytimer:start()
