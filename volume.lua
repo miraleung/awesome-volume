@@ -6,9 +6,14 @@ volume_icon = wibox.widget.imagebox()
 volume_text = wibox.widget.textbox()
 volume_text:set_align("right")
 
+spacer = wibox.widget.textbox()
+spacer:set_text("  ")
+
+
 volume_widget = wibox.layout.fixed.horizontal()
-volume_widget:add(volume_icon)
 volume_widget:add(volume_text)
+volume_widget:add(spacer)
+volume_widget:add(volume_icon)
 
 function get_current_path()
    local path = debug.getinfo(2, "S").source:sub(2)
