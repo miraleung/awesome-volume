@@ -19,6 +19,7 @@ function update_volume(text_widget, icon_widget)
   local fd = io.popen("amixer -D pulse sget Master")
   local pwd = get_current_path()
   local status = fd:read("*all")
+  local icons_dir = "icons"
   fd:close()
 
   local volume = string.match(status, "(%d?%d?%d)%%")
@@ -48,7 +49,7 @@ function update_volume(text_widget, icon_widget)
   end
 
   text_widget:set_markup(volume_str)
-  icon_widget:set_image(pwd .. icon)
+  icon_widget:set_image(pwd .. "/" .. icons_dir .. "/" .. icon)
 end
 
 function volume_up()
