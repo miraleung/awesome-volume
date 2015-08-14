@@ -22,5 +22,12 @@ A volume widget for [awesomewm](http://awesome.naquadah.org/) 3.5.
     ```
     right_layout:add(volume_widget)
     ```
+  3. Add keybindings to the section `globalkeys = awful.util.table.join(...)`:
+    ```
+    awful.key({ modkey, <Modifier> }, <Key>, function() volume_up() end),
+    awful.key({ modkey, <Modifier> }, <Key>, function() volume_down() end),
+    awful.key({ modkey, <Modifier> }, <Key>, function() volume_mute() end)
 
-Icons sourced from [here](www.iconfinder.com).
+    ```
+
+Icons sourced from [here](www.iconfinder.com), widget adapted from [here](https://awesome.naquadah.org/wiki/Volume_control_and_display).

@@ -1,3 +1,8 @@
+--[[
+-- Volume widget for awesomewm 3.5
+-- @author miraleung
+--]]
+
 local wibox = require("wibox")
 local awful = require("awful")
 
@@ -71,6 +76,6 @@ end
 
 update_volume(volume_text, volume_icon)
 
-mytimer = timer({ timeout = 0.2 })
+local mytimer = timer({ timeout = 0.2 })
 mytimer:connect_signal("timeout", function () update_volume(volume_text, volume_icon) end)
 mytimer:start()
