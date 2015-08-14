@@ -1,7 +1,16 @@
 # awesome-volume
 A volume widget for [awesomewm](http://awesome.naquadah.org/) 3.5.
 
+![awesome-volume](https://cloud.githubusercontent.com/assets/5384433/9268419/9c43f76e-4213-11e5-8392-3b669a8ad8da.png)
+
+## Screenshots
+| **Volume setting** | Low | Medium | High | Mute |
+|:-------------------|:----|:-------|:-----|:-----|
+  ||![Low volume](https://cloud.githubusercontent.com/assets/5384433/9268417/9c335256-4213-11e5-86e2-2d77efb265f9.png) | ![Medium volume](https://cloud.githubusercontent.com/assets/5384433/9268418/9c4086ce-4213-11e5-9292-ea119ba45ed9.png) |![High volume](https://cloud.githubusercontent.com/assets/5384433/9268416/9c214412-4213-11e5-8bfa-1a1dd6aa2bff.png) | ![Mute](https://cloud.githubusercontent.com/assets/5384433/9268420/9c452ee0-4213-11e5-9d41-d25a0100f65b.png) |
+
+
 ## Installation
+0. **Dependencies.** [amixer](http://linux.die.net/man/1/amixer) from the `alsa-utils` package.
 1. `cd ~/.config/awesome/lib` (awesomewm config directory).
 2. `git clone https://github.com/miraleung/awesome-volume.git`
 3. In `rc.lua`:
@@ -13,3 +22,5 @@ A volume widget for [awesomewm](http://awesome.naquadah.org/) 3.5.
     ```
     right_layout:add(volume_widget)
     ```
+
+Icons sourced from [here](www.iconfinder.com).
