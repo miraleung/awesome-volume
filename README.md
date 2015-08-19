@@ -11,7 +11,7 @@ A volume widget for [awesomewm](http://awesome.naquadah.org/) 3.5.
 
 ## Installation
 0. **Dependencies.** [amixer](http://linux.die.net/man/1/amixer) from the `alsa-utils` package.
-1. `cd ~/.config/awesome/lib` (awesomewm config directory).
+1. `cd ~/.config/awesome/lib`
 2. `git clone https://github.com/miraleung/awesome-volume.git`
 3. `cd ..`
 4. In `rc.lua`:
