@@ -31,4 +31,4 @@ A volume widget for [awesomewm](http://awesome.naquadah.org/) 3.5.
 
     ```
 
-Icons sourced from [here](www.iconfinder.com), widget adapted from [here](https://awesome.naquadah.org/wiki/Volume_control_and_display).
+Icons sourced from [here](https://www.iconfinder.com), widget adapted from [here](https://awesome.naquadah.org/wiki/Volume_control_and_display).
