@@ -6,12 +6,12 @@
 local wibox = require("wibox")
 local awful = require("awful")
 
-volume_icon = wibox.widget.imagebox()
+local volume_icon = wibox.widget.imagebox()
 
-volume_text = wibox.widget.textbox()
+local volume_text = wibox.widget.textbox()
 volume_text:set_align("right")
 
-spacer = wibox.widget.textbox()
+local spacer = wibox.widget.textbox()
 spacer:set_text("  ")
 
 
@@ -25,7 +25,7 @@ function get_current_path()
    return path:match("(.*/)")
 end
 
-function update_volume(text_widget, icon_widget)
+function update_volume()
   local fd = io.popen("amixer -D pulse sget Master")
   local pwd = get_current_path()
   local status = fd:read("*all")
@@ -33,8 +33,8 @@ function update_volume(text_widget, icon_widget)
   fd:close()
 
   local volume = string.match(status, "(%d?%d?%d)%%")
-  volume_int = tonumber(volume)
-  volume_str = string.format("% 3d", volume)
+  local volume_int = tonumber(volume)
+  local volume_str = string.format("% 3d", volume)
 
   icon = "volume_icon_med.png"
   status = string.match(status, "%[(o[^%]]*)%]")
@@ -58,8 +58,8 @@ function update_volume(text_widget, icon_widget)
     icon = "volume_icon_high.png"
   end
 
-  text_widget:set_markup(volume_str)
-  icon_widget:set_image(pwd .. "/" .. icons_dir .. "/" .. icon)
+  volume_text:set_markup(volume_str)
+  volume_icon:set_image(pwd .. "/" .. icons_dir .. "/" .. icon)
 end
 
 function volume_up()
@@ -77,5 +77,5 @@ end
 update_volume(volume_text, volume_icon)
 
 local mytimer = timer({ timeout = 0.2 })
-mytimer:connect_signal("timeout", function () update_volume(volume_text, volume_icon) end)
+mytimer:connect_signal("timeout", function () update_volume() end)
 mytimer:start()
