@@ -28,7 +28,44 @@ function get_current_path()
    return path:match("(.*/)")
 end
 
+function isempty(str)
+  return str == nil or str == ""
+end
+
+-- Returns the amixer command for checking the headphone jack.
+function get_headphone_query()
+  local num_cards_cmd = 'grep -nr "[0-9]\\+ \\[" /proc/asound/cards | wc -l'
+  local fd = io.popen(num_cards_cmd)
+  local num_cards_str = fd:read("*all")
+  fd:close()
+
+  local num_cards = tonumber(num_cards_str)
+  local curr_card_id = 0
+  local control_id = ""
+  for i = 0, num_cards, 1 do
+    find_controls_cmd = 'amixer -c ' .. tostring(i) .. ' controls | grep "Headphone Jack"'
+    fd = io.popen(find_controls_cmd)
+    local control_str = fd:read("*all")
+    fd:close()
+    if not isempty(control_str) then
+      curr_card_id = tostring(i)
+      control_id = control_str
+      io.write(control_str)
+      break
+    end
+  end
+
+  local amixer_headphones_cmd = ""
+  if not isempty(control_id) then
+    amixer_headphones_cmd = "amixer -c " .. curr_card_id .. " cget " .. control_id
+  end
+
+  return amixer_headphones_cmd
+end
+
+
 local current_path = get_current_path()
+local query_headphones_cmd = get_headphone_query()
 
 function update_volume()
   local fd = io.popen("amixer -D pulse sget Master")
@@ -40,9 +77,11 @@ function update_volume()
   local volume_int = tonumber(volume)
   local volume_str = string.format("% 3d", volume)
 
-  local speaker_id = status:match("Playback%s%d%s%-%s(%d%d+)")
-  local current_output_id = status:match(":%sPlayback%s(%d%d+)")
-  local is_audio_jack_in = (speaker_id ~= current_output_id)
+  fd = io.popen(query_headphones_cmd)
+  local headphone_status = fd:read("*all")
+  fd:close()
+  headphone_status = headphone_status:match("values=(o%w+)")
+  local is_audio_jack_in = (headphone_status == "on")
 
   local icon = "volume_icon_med.png"
   local aj_icon = "empty.png"
