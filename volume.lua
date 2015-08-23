@@ -84,7 +84,6 @@ function update_volume()
   local is_audio_jack_in = (headphone_status == "on")
 
   local icon = "volume_icon_med.png"
-  local aj_icon = "empty.png"
   status = string.match(status, "%[(o[^%]]*)%]")
 
   if string.find(status, "on", 1, true) then
@@ -108,12 +107,15 @@ function update_volume()
   end
 
   if is_audio_jack_in then
-    aj_icon = "volume_icon_headphones.png"
+    local aj_icon = "volume_icon_headphones.png"
+    audio_jack_icon:set_image(current_path .. "/" .. icons_dir .. "/" .. aj_icon)
+  else
+    audio_jack_icon:set_image(nil)
   end
 
   volume_text:set_markup(volume_str)
   volume_icon:set_image(current_path .. "/" .. icons_dir .. "/" .. icon)
-  audio_jack_icon:set_image(current_path .. "/" .. icons_dir .. "/" .. aj_icon)
+
 end
 
 function volume_up()
