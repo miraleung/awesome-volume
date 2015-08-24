@@ -45,12 +45,10 @@ function get_headphone_query()
   for i = 0, num_cards, 1 do
     find_controls_cmd = 'amixer -c ' .. tostring(i) .. ' controls | grep "Headphone Jack"'
     fd = io.popen(find_controls_cmd)
-    local control_str = fd:read("*all")
+    control_id = fd:read("*all")
     fd:close()
-    if not isempty(control_str) then
+    if not isempty(control_id) then
       curr_card_id = tostring(i)
-      control_id = control_str
-      io.write(control_str)
       break
     end
   end
