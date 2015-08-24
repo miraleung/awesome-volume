@@ -67,35 +67,20 @@ end
 local current_path = get_current_path()
 local query_headphones_cmd = get_headphone_query()
 
-function update_volume()
-  local fd = io.popen("amixer -D pulse sget Master")
-  local status = fd:read("*all")
-  local icons_dir = "icons"
-  fd:close()
+-- Returns true if headphones are plugged in
+function is_audio_jack_in()
+  if isempty(query_headphones_cmd) then
+    return false
+  end
 
-  local volume = string.match(status, "(%d?%d?%d)%%")
-  local volume_int = tonumber(volume)
-  local volume_str = string.format("% 3d", volume)
-
-  fd = io.popen(query_headphones_cmd)
+  local fd = io.popen(query_headphones_cmd)
   local headphone_status = fd:read("*all")
   fd:close()
   headphone_status = headphone_status:match("values=(o%w+)")
-  local is_audio_jack_in = (headphone_status == "on")
+  return headphone_status == "on"
+end
 
-  local icon = "volume_icon_med.png"
-  status = string.match(status, "%[(o[^%]]*)%]")
-
-  if string.find(status, "on", 1, true) then
-    -- For the volume numbers
-    volume_str = volume_str .. "%"
-  else
-    -- For the mute button
-    volume_int = 0
-    volume_str = volume_str .. "M"
-  end
-
-  -- Set icons
+function get_volume_icon(volume_int)
   if volume_int == 0 then
     icon = "volume_icon_mute.png"
   elseif volume_int < 33 then
@@ -105,8 +90,32 @@ function update_volume()
   else
     icon = "volume_icon_high.png"
   end
+  return icon
+end
 
-  if is_audio_jack_in then
+function update_volume()
+  local fd = io.popen("amixer -D pulse sget Master")
+  local status = fd:read("*all")
+  local icons_dir = "icons"
+  fd:close()
+
+  local volume = status:match("(%d?%d?%d)%%")
+  local volume_int = tonumber(volume)
+  local volume_str = string.format("% 3d", volume)
+
+  status = status:match("%[(o[^%]]*)%]")
+
+  if status:find("on", 1, true) then
+    -- For the volume numbers
+    volume_str = volume_str .. "%"
+  else
+    -- For the mute button
+    volume_int = 0
+    volume_str = volume_str .. "M"
+  end
+
+  local icon = get_volume_icon(volume_int)
+  if is_audio_jack_in() then
     local aj_icon = "volume_icon_headphones.png"
     audio_jack_icon:set_image(current_path .. "/" .. icons_dir .. "/" .. aj_icon)
   else
