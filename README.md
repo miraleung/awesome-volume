@@ -16,14 +16,17 @@ A volume widget for [awesomewm](http://awesome.naquadah.org/) 3.5.
 3. `cd ..`
 4. In `rc.lua`:
   1. Add to the top:
+
     ```
     local volume require("lib.awesome-volume.volume")
     ```
   2. After the line `if s == 1 then right_layout:add(wibox.widget.systray()) end`, add
+
     ```
     right_layout:add(volume_widget)
     ```
-  3. Add keybindings to the section `globalkeys = awful.util.table.join(...)`
+  3. Add keybindings to the section `globalkeys = awful.util.table.join(...)`:
+
     ```
     awful.key({ modkey, <Modifier> }, <Key>, function() volume_up() end),
     awful.key({ modkey, <Modifier> }, <Key>, function() volume_down() end),
