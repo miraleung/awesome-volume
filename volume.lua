@@ -92,7 +92,7 @@ function get_volume_icon(volume_int)
 end
 
 function update_volume()
-  local fd = io.popen("amixer -D pulse sget Master")
+  local fd = io.popen("amixer sget Master")
   local status = fd:read("*all")
   local icons_dir = "icons"
   fd:close()
@@ -126,15 +126,15 @@ function update_volume()
 end
 
 function volume_up()
-  awful.util.spawn("amixer -D pulse sset Master 5%+")
+  awful.util.spawn("amixer sset Master 5%+")
 end
 
 function volume_down()
-  awful.util.spawn("amixer -D pulse sset Master 5%-")
+  awful.util.spawn("amixer sset Master 5%-")
 end
 
 function volume_mute()
-  awful.util.spawn("amixer -D pulse sset Master toggle")
+  awful.util.spawn("amixer sset Master toggle")
 end
 
 update_volume(volume_text, volume_icon)
